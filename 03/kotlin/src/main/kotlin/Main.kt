@@ -8,14 +8,14 @@ fun main() {
 
     val lines = getLinesFromFile("../demo-input.txt")
 
-    val result = lines.map { line ->
+    val result = lines.sumOf { line ->
         val size = line.length / 2
         val a = line.substring(0, size).toSet()
         val b = line.substring(size).toSet()
         val inter = a.intersect(b)
         assert(inter.size == 1)
         lookup.getValue(inter.first())
-    }.sum()
+    }
 
     println(result)
 }
