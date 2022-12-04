@@ -7,22 +7,30 @@ from dataclasses import dataclass
 def main():
     lines = get_lines_from_file("personal-input.txt")
 
-    sum = 0
+    include_sum = 0
+    overlap_sum = 0
+
     for line in lines:
         task_a, task_b = get_tasks_from_line(line)
         if task_a.includes(task_b) or task_b.includes(task_a):
-            sum += 1
-    print(sum)
+            include_sum += 1
+        if task_a.overlaps(task_b):
+            overlap_sum += 1
+    
+    print(include_sum)
+    print(overlap_sum)
 
 
 def get_tasks_from_line(line):
     a, b = [CleanupTask(it) for it in line.split(',')]
-    logging.info(f"a: {a}")
-    logging.info(f"b: {b}")
-    logging.info(f"includes: {a.includes(b)}")
-    logging.info(f"includes: {b.includes(a)}")
-    logging.info(f"total: {a.includes(b) or b.includes(a)}")
-    logging.info("---")
+    logging.debug(f"a: {a}")
+    logging.debug(f"b: {b}")
+    logging.debug(f"a includes b: {a.includes(b)}")
+    logging.debug(f"b includes a: {b.includes(a)}")
+    logging.debug(f"total: {a.includes(b) or b.includes(a)}")
+    logging.debug("---")
+    logging.debug(f"a overlaps b: {a.overlaps(b)}")
+    logging.debug("===")
     return [a, b]
 
 
@@ -37,6 +45,13 @@ class CleanupTask:
     def includes(self, other):
         return self.start <= other.start and self.end >= other.end
     
+    def overlaps(self, other):
+        a = set(range(self.start, self.end+1))
+        b = set(range(other.start, other.end+1))
+        overlap = a.intersection(b)
+
+        return bool(overlap)
+
 
 def get_lines_from_file(input_file: str) -> list[str]:
     with open(input_file) as file:
