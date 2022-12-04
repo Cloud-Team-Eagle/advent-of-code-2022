@@ -14,6 +14,7 @@ fun main() {
         val b = line.substring(size).toSet()
         val inter = a.intersect(b)
         assert(inter.size == 1)
+        
         lookup.getValue(inter.first())
     }
 
