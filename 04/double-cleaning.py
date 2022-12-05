@@ -49,7 +49,6 @@ class CleanupTask:
         a = set(range(self.start, self.end+1))
         b = set(range(other.start, other.end+1))
         overlap = a.intersection(b)
-
         return bool(overlap)
 
 
